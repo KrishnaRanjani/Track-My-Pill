@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+	<title>Track my pill</title>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+	<link href="css/app.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+	<script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-firestore.js"></script>
+</head>
+
+
+<body>
+	<div class="wrapper">
+		<nav id="sidebar" class="sidebar">
+			<div class="sidebar-content js-simplebar">
+				<a class="sidebar-brand" href="home.html">
+					<span class="align-middle">Track My Pill</span>
+				</a>
+
+				<ul class="sidebar-nav">
+					<li class="sidebar-header">
+						Section
+					</li>
+
+					<li class="sidebar-item active">
+						<a class="sidebar-link" href="home.html">
+							<i class="align-middle" data-feather="sliders"></i> <span
+								class="align-middle">Dashboard</span>
+						</a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="PatientManagement.html">
+							<i class="align-middle" data-feather="user"></i> <span class="align-middle">Patient
+								Management </span>
+						</a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="TaskList.html">
+							<i class="align-middle" data-feather="settings"></i> <span class="align-middle">Task
+								List</span>
+						</a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="MemberDetails.html">
+							<i class="align-middle" data-feather="credit-card"></i> <span class="align-middle">Member
+								Details</span>
+						</a>
+					</li>
+
+
+
+					<li class="sidebar-item">
+						<a href="#auth" data-bs-toggle="collapse" class="sidebar-link collapsed">
+							<i class="align-middle" data-feather="users"></i> <span class="align-middle">Auth</span>
+						</a>
+						<ul id="auth" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+							<li class="sidebar-item"><a class="sidebar-link" href="Addpatient.html">Add Patient</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" href="Removepatient.html">Remove
+									Patient</a></li>
+						</ul>
+					</li>
+
+					<li class="sidebar-header">
+						Reports
+					</li>
+					<li class="sidebar-item">
+						<a data-bs-target="#ui" data-bs-toggle="collapse" class="sidebar-link collapsed">
+							<i class="align-middle" data-feather="briefcase"></i> <span class="align-middle">Patient
+								Condition</span>
+						</a>
+						<ul id="ui" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+							
+							<li class="sidebar-item"><a class="sidebar-link" href="highrisk.html">High Risk</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" href="attention.html">Attention Needed</a>
+							</li>
+							<li class="sidebar-item"><a class="sidebar-link" href="lowrisk.html">Low Risk</a></li>
+						</ul>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="MedicineRefill.html">
+							<i class="align-middle" data-feather="coffee"></i> <span class="align-middle">Medicine
+								Refill</span>
+						</a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="Report.html">
+							<i class="align-middle" data-feather="check-circle"></i> <span class="align-middle">report
+							</span>
+						</a>
+					</li>
+
+					<li class="sidebar-header">
+						Analysis
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="">
+							<i class="align-middle" data-feather="bar-chart-2"></i> <span
+								class="align-middle">Charts</span>
+						</a>
+					</li>
+
+
+
+				</ul>
+
+
+			</div>
+		</nav>
+
+		<div class="main">
+			<nav class="navbar navbar-expand navbar-light navbar-bg">
+				<a class="sidebar-toggle d-flex">
+					<i class="hamburger align-self-center"></i>
+				</a>
+
+
+				<div class="navbar-collapse collapse">
+					<ul class="navbar-nav navbar-align">
+
+						<li class="nav-item dropdown">
+							<div class=" text-center">
+								<div class="mb-3">
+									<div class="btn-group">
+										<button type="button" class="btn btn-primary " id="btn-logout">
+											Logout
+										</button>
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</nav>
+
+			<main class="content">
+				<div class="container-fluid p-0">
+
+					<h1 class="h3 mb-3">Update / Remove Patient Record</h1>
+
+					<div class="row">
+						<div class="col-md-3 col-xl-2">
+
+							<div class="card">
+								<div class="card-header">
+									<h3 class="card-title mb-0">Patient Details</h3>
+								</div>
+
+								<div class="list-group list-group-flush" role="tablist">
+									<a class="list-group-item list-group-item-action active" data-bs-toggle="list"
+										href="#Update" role="tab"> Update Patient Record </a>
+									<a class="list-group-item list-group-item-action" data-bs-toggle="list"
+										href="#Remove" role="tab">Delete Patient Record</a>
+
+
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-9 col-xl-10">
+							<div class="tab-content">
+								<div class="tab-pane fade show active" id="Update" role="tabpanel">
+
+									<div class="card">
+										<div class="card-header">
+
+											<h5 class="card-title mb-0">Patient information</h5>
+										</div>
+										<div class="card-body">
+											<form>
+												<div class="row">
+													<div class="col-md-8">
+
+														<div class="mb-3">
+															<label class="form-label" for="inputUsername">Patient
+																ID</label>
+															<input type="text" class="form-control" id="patientid"
+																placeholder="Patient ID">
+														</div>
+
+														<div class="mb-3">
+															<label class="form-label" for="inputUsername">Patient
+																Name</label>
+															<input type="text" class="form-control" id="patientname"
+																placeholder="Patient Name">
+														</div>
+
+														<div class="mb-3">
+															<label class="form-label" for="inputUsername">Pre Medical
+																Data</label>
+															<textarea rows="2" class="form-control" id="patientmedrec"
+																placeholder="Patients pre-medical Condition"></textarea>
+														</div>
+
+														<div class="mb-3">
+															<label class="form-label" for="contact number">Primary
+																Contact Number</label>
+															<input type="contactnumber" class="form-control"
+																id="contact-no1" placeholder="Contact Number">
+														</div>
+														<div class="mb-3">
+															<label for="Treatment start" class="form-label">Treatment
+																Start Date</label>
+															<input class="form-control" type="date" value="2021-05-09"
+																id="tret-start">
+														</div>
+														<div class="mb-3">
+															<label for="Treatment start" class="form-label">Treatment
+																End Date</label>
+															<input class="form-control" type="date" value="2021-05-09"
+																id="tret-End">
+														</div>
+														<div class="mb-3">
+															<label class="form-label" for="Treatment Duration">Treatment
+																Duration</label>
+															<input type="text" class="form-control" id="tret-Duration"
+																placeholder=" Enter the duration in months">
+														</div>
+														<div class="mb-3">
+															<label class="form-label" for="Doctor Name">Doctor
+																Name</label>
+															<input type="text" class="form-control" id="Doctor-Name"
+																placeholder="Doctor's Name">
+														</div>
+														<div class="mb-3">
+															<label class="form-label" for="Doctor Name">Doctor Contact
+																Number</label>
+															<input type="text" class="form-control" id="Doc-Num"
+																placeholder="Contact number">
+														</div>
+														<div class="mb-3">
+															<label class="form-label" for="Hospital name">Hospital
+																Name</label>
+															<input type="text" class="form-control" id="HospitalName"
+																placeholder="Hospital Name">
+														</div>
+														<div class="mb-3">
+															<label class="form-label" for="Hospital Location">Hospital
+																Location</label>
+															<input type="text" class="form-control"
+																id="Hospital-Location" placeholder="Hospital Location">
+														</div>
+														<div class="mb-3">
+															<label class="form-label" for="Disease"> Reason for
+																Treatment </label>
+															<input type="text" class="form-control" id="pre-Disease"
+																placeholder=" Enter the name of the condition">
+														</div>
+
+
+
+														<div class="mb-3">
+															<label for="example-time-input"
+																class="form-label">Prescription timing</label>
+															<input class="form-control" type="time" value="00:00:00"
+																id="pres-Timing">
+														</div>
+
+														<div class="mb-3">
+															<label class="form-label" for="Gender">Medication
+																Hours</label>
+															<select class="form-control mb-3" id="pres-Dur">
+																<option selected>Open this select menu</option>
+																<option>Morning</option>
+																<option>Afternoon</option>
+																<option>Night</option>
+																<option>Morning & Night</option>
+																<option>12 hours</option>
+																<option>8 hours</option>
+															</select>
+														</div>
+
+														<button type="button" class="btn btn-primary"
+															id="updatepatient"> Update Patient Record</button>
+
+													</div>
+												</div>
+
+											</form>
+
+
+
+										</div>
+									</div>
+								</div>
+
+
+
+
+								<div class="tab-pane fade" id="Remove" role="tabpanel">
+									<div class="card">
+										<div class="card-body">
+											<h1 class="card-title">Remove Patient Details</h1>
+
+											<form>
+												<div class="row">
+													<div class="col-md-8">
+														<div class="mb-3">
+															<label class="form-label" for="inputremoveUsername">Patient
+																ID</label>
+															<input type="text" class="form-control" id="removepatientid"
+																placeholder="patient id">
+														</div>
+														<div class="mb-3">
+															<label class="form-label" for="inputremoveUsername">Patient
+																Name</label>
+															<input type="text" class="form-control" id="rpatientname"
+																placeholder="patient name">
+														</div>
+														<div class="mb-3">
+															<label class="form-label" for="inputUsername">Reason</label>
+															<textarea rows="2" class="form-control" id="reason"
+																placeholder="Reason for patient Removal "></textarea>
+														</div>
+													</div>
+												</div>
+
+												<button type="button" class="btn btn-primary"
+													id="removepatient">Remove</button>
+											</form>
+
+
+										</div>
+									</div>
+								</div>
+
+
+
+
+							</div>
+
+						</div>
+
+					</div>
+
+				</div>
+			</main>
+
+
+
+			<footer class="footer">
+				<div class="container-fluid">
+					<div class="row text-muted">
+						<div class="col-6 text-start">
+							<p class="mb-0">
+								<a href="home.html" class="text-muted"><strong>Track My Pill</strong></a>
+							</p>
+						</div>
+						<div class="col-6 text-end">
+							<ul class="list-inline">
+								<li class="list-inline-item">
+									<a class="text-muted" href="#">Support</a>
+								</li>
+								<li class="list-inline-item">
+									<a class="text-muted" href="#">Help Center</a>
+								</li>
+
+							</ul>
+						</div>
+					</div>
+				</div>
+			</footer>
+		</div>
+	</div>
+
+	<script src="js/app.js"></script>
+	<script src="js/index.js"></script>
+	<script src="js/removerecord.js"></script>
+
+
+	<script>
+		firebase.auth().onAuthStateChanged(function (user) {
+
+			if (!user) {
+				window.location.href = "index.html"
+			}
+		});
+	</script>
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+<head>
+  <title>Login</title>
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <!------ Include the above in your HEAD tag ---------->
+  <link href="css/login.css" rel="stylesheet">
+  <!--------firebase------>
+  <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-storage.js"></script>
+</head>
+
+<body>
+
+  <div class="wrapper fadeInDown"
+    style="text-align:center; background-repeat: no-repeat;background-image: url(images/login.jpg);background-size: contain;-webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover;">
+
+    <div id="formContent">
+
+      <!-- Icon -->
+      <div class="fadeIn first">
+        <h1>Track My pill</h1>
+      </div>
+      <h4 class="card-title mt-3 text-center">Log In</h4>
+      <form>
+        <input type="text" id="mail" class="fadeIn second" name="login" placeholder="Mail Id">
+        <input type="password" id="password" class="fadeIn third" name="login" placeholder="password">
+        <button class="btn btn-primary" id="btn-login" type="button">
+          Log In
+        </button>
+
+
+      </form>
+
+
+
+      <div id="formFooter">
+        <p class="text-center">Does not Have an account? <a href="">Sign In</a> </p>
+      </div>
+
+    </div>
+  </div>
+  <script src="js/index.js"></script>>
+  <script>
+    firebase.auth().onAuthStateChanged(function (user) {
+
+      if (user) {
+        window.location.href = "home.html"
+      }
+
+    });
+  </script>
+</body>
+
+</html>

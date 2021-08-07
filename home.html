@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<title>Track my pill</title>
+
+
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+	<link href="css/app.css" rel="stylesheet">
+
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+	<script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-database.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-storage.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-firestore.js"></script>
+
+
+	
+	
+</head>
+
+<body>
+	<div class="wrapper">
+		<nav id="sidebar" class="sidebar">
+			<div class="sidebar-content js-simplebar">
+				<a class="sidebar-brand" href="home.html">
+					<span class="align-middle">Track My Pill</span>
+				</a>
+
+				<ul class="sidebar-nav">
+					<li class="sidebar-header">
+						Section
+					</li>
+
+					<li class="sidebar-item active">
+						<a class="sidebar-link" href="home.html">
+							<i class="align-middle" data-feather="sliders"></i> <span
+								class="align-middle">Dashboard</span>
+						</a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="PatientManagement.html">
+							<i class="align-middle" data-feather="user"></i> <span class="align-middle">Patient 
+								Management </span>
+						</a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="TaskList.html">
+							<i class="align-middle" data-feather="settings"></i> <span class="align-middle">Task
+								List</span>
+						</a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="MemberDetails.html">
+							<i class="align-middle" data-feather="credit-card"></i> <span class="align-middle">Member
+								Details</span>
+						</a>
+					</li>
+
+
+
+					<li class="sidebar-item">
+						<a href="#auth" data-bs-toggle="collapse" class="sidebar-link collapsed">
+							<i class="align-middle" data-feather="users"></i> <span class="align-middle">Auth</span>
+						</a>
+						<ul id="auth" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+							<li class="sidebar-item"><a class="sidebar-link" href="Addpatient.html">Add Patient</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" href="Removepatient.html">Remove
+									Patient</a></li>
+						</ul>
+					</li>
+
+					<li class="sidebar-header">
+						Reports
+					</li>
+					<li class="sidebar-item">
+						<a data-bs-target="#ui" data-bs-toggle="collapse" class="sidebar-link collapsed">
+							<i class="align-middle" data-feather="briefcase"></i> <span class="align-middle">Patient
+								Condition</span>
+						</a>
+						<ul id="ui" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+							
+							<li class="sidebar-item"><a class="sidebar-link" href="highrisk.html">High Risk</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" href="attention.html">Attention Needed</a>
+							</li>
+							<li class="sidebar-item"><a class="sidebar-link" href="lowrisk.html">Low Risk</a></li>
+						</ul>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="MedicineRefill.html">
+							<i class="align-middle" data-feather="coffee"></i> <span class="align-middle">Medicine
+								Refill</span>
+						</a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="Report.html">
+							<i class="align-middle" data-feather="check-circle"></i> <span class="align-middle">report
+							</span>
+						</a>
+					</li>
+
+					<li class="sidebar-header">
+						Analysis
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="">
+							<i class="align-middle" data-feather="bar-chart-2"></i> <span
+								class="align-middle">Charts</span>
+						</a>
+					</li>
+
+
+
+				</ul>
+
+
+			</div>
+		</nav>
+
+		<div class="main">
+			<nav class="navbar navbar-expand navbar-light navbar-bg">
+				<a class="sidebar-toggle d-flex">
+					<i class="hamburger align-self-center"></i>
+				</a>
+
+
+				<div class="navbar-collapse collapse">
+					<ul class="navbar-nav navbar-align">
+
+						<li class="nav-item dropdown">
+							<div class=" text-center">
+								<div class="mb-3">
+									<div class="btn-group">
+										<button type="button" class="btn btn-primary " id="btn-logout">
+											Logout
+										</button>
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</nav>
+
+			<main class="content">
+				<div class="container-fluid p-0">
+
+					<div class="row mb-2 mb-xl-3">
+						<div class="col-auto d-none d-sm-block">
+							<h3><strong>Analytics</strong> Dashboard</h3>
+						</div>
+
+						<div class="col-auto ms-auto text-end mt-n1">
+							<nav aria-label="breadcrumb">
+								<ol class="breadcrumb bg-transparent p-0 mt-1 mb-0">
+									<li class="breadcrumb-item"><a href="#">Track My Pill</a></li>
+									<li class="breadcrumb-item"><a href="#">Dashboards</a></li>
+									<li class="breadcrumb-item active" aria-current="page">Analytics</li>
+								</ol>
+							</nav>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xl-6 col-xxl-5 d-flex">
+							<div class="w-100">
+								<div class="row">
+									<div class="col-sm-6">
+										<div class="card">
+											<div class="card-body">
+												<h5 class="card-title mb-4">Patients Enrolled</h5>
+												<h1 class="mt-1 mb-3">200</h1>
+												<div class="mb-1">
+
+													<span class="text-muted">Since last week</span>
+												</div>
+											</div>
+										</div>
+										<div class="card">
+											<div class="card-body">
+												<h5 class="card-title mb-4">Patients on Treatment</h5>
+												<h1 class="mt-1 mb-3">172</h1>
+												<div class="mb-1">
+
+													<span class="text-muted">Since last week</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="card">
+											<div class="card-body">
+												<h5 class="card-title mb-4">Patients with outcomes </h5>
+												<h1 class="mt-1 mb-3">64</h1>
+												<div class="mb-1">
+
+													<span class="text-muted">Since last week</span>
+												</div>
+											</div>
+										</div>
+										<div class="card">
+											<div class="card-body">
+												<h5 class="card-title mb-4">Patients cured completely</h5>
+												<h1 class="mt-1 mb-3">64</h1>
+												<div class="mb-1">
+
+													<span class="text-muted">Since last week</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-xl-6 col-xxl-7">
+							<div class="card flex-fill w-100">
+								<div class="card-header">
+
+									<h5 class="card-title mb-0">Enrollement Record</h5>
+								</div>
+								<div class="card-body py-3">
+									<div class="chart chart-sm">
+										<canvas id="chartjs-dashboard-line"></canvas>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-12 col-md-6 col-xxl-3 d-flex order-2 order-xxl-3">
+							<div class="card flex-fill w-100">
+								<div class="card-header">
+
+									<h5 class="card-title mb-0">Disease Category</h5>
+								</div>
+								<div class="card-body d-flex">
+									<div class="align-self-center w-100">
+										<div class="py-3">
+											<div class="chart chart-xs">
+												<canvas id="chartjs-dashboard-pie"></canvas>
+											</div>
+										</div>
+
+										<table class="table mb-0">
+											<tbody>
+												<tr>
+													<td>Diabeties</td>
+													<td class="text-end">120</td>
+												</tr>
+												<tr>
+													<td>Blood Pressure</td>
+													<td class="text-end">80</td>
+												</tr>
+												<tr>
+													<td>allergy</td>
+													<td class="text-end">20</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-12 col-md-6 col-xxl-3 d-flex order-1 order-xxl-1">
+							<div class="card flex-fill">
+								<div class="card-header">
+
+									<h5 class="card-title mb-0">Calendar</h5>
+								</div>
+								<div class="card-body d-flex">
+									<div class="align-self-center w-100">
+										<div class="chart">
+											<div id="datetimepicker-dashboard"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-12 col-lg-8 col-xxl-9 d-flex">
+							<div class="card flex-fill">
+								<div class="card-header">
+
+									<h5 class="card-title mb-0">High Risk Patient</h5>
+								</div>
+								<table class="table table-hover my-0">
+									<thead>
+										<tr>
+											<th>Name</th>
+											<th class="d-none d-xl-table-cell">Start Date</th>
+											<th class="d-none d-xl-table-cell">End Date</th>
+											<th>Status</th>
+											<th class="d-none d-md-table-cell">Disease</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>Annie</td>
+											<td class="d-none d-xl-table-cell">01/01/2021</td>
+											<td class="d-none d-xl-table-cell">31/06/2021</td>
+											<td><span class="badge bg-success">Done</span></td>
+											<td class="d-none d-md-table-cell">Allergy</td>
+										</tr>
+										<tr>
+											<td>Sam</td>
+											<td class="d-none d-xl-table-cell">01/01/2021</td>
+											<td class="d-none d-xl-table-cell">31/06/2021</td>
+											<td><span class="badge bg-danger">Due</span></td>
+											<td class="d-none d-md-table-cell">Diabeties</td>
+										</tr>
+										<tr>
+											<td>Ram</td>
+											<td class="d-none d-xl-table-cell">01/01/2021</td>
+											<td class="d-none d-xl-table-cell">31/06/2021</td>
+											<td><span class="badge bg-success">Done</span></td>
+											<td class="d-none d-md-table-cell">Blood Pressure</td>
+										</tr>
+										<tr>
+											<td>George</td>
+											<td class="d-none d-xl-table-cell">01/01/2021</td>
+											<td class="d-none d-xl-table-cell">31/06/2021</td>
+											<td><span class="badge bg-danger">Due</span></td>
+											<td class="d-none d-md-table-cell">Diabetics</td>
+										</tr>
+										<tr>
+											<td>Angel</td>
+											<td class="d-none d-xl-table-cell">01/01/2021</td>
+											<td class="d-none d-xl-table-cell">31/06/2021</td>
+											<td><span class="badge bg-success">Done</span></td>
+											<td class="d-none d-md-table-cell">Diabetics</td>
+										</tr>
+										<tr>
+											<td>Tommy</td>
+											<td class="d-none d-xl-table-cell">01/01/2021</td>
+											<td class="d-none d-xl-table-cell">31/06/2021</td>
+											<td><span class="badge bg-success">Done</span></td>
+											<td class="d-none d-md-table-cell">Blood Pressure</td>
+										</tr>
+										<tr>
+											<td>Christina</td>
+											<td class="d-none d-xl-table-cell">01/01/2021</td>
+											<td class="d-none d-xl-table-cell">31/06/2021</td>
+											<td><span class="badge bg-success">Done</span></td>
+											<td class="d-none d-md-table-cell">Allergy</td>
+										</tr>
+										<tr>
+											<td>william</td>
+											<td class="d-none d-xl-table-cell">01/01/2021</td>
+											<td class="d-none d-xl-table-cell">31/06/2021</td>
+											<td><span class="badge bg-danger">Due</span></td>
+											<td class="d-none d-md-table-cell">Blood Pressure </td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="col-12 col-lg-4 col-xxl-3 d-flex">
+							<div class="card flex-fill w-100">
+								<div class="card-header">
+
+									<h5 class="card-title mb-0">Patients Feedback</h5>
+								</div>
+								<div class="card-body d-flex w-100">
+									<div class="align-self-center chart chart-lg">
+										<canvas id="chartjs-dashboard-bar"></canvas>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</main>
+
+			<footer class="footer">
+				<div class="container-fluid">
+					<div class="row text-muted">
+						<div class="col-6 text-start">
+							<p class="mb-0">
+								<a href="home.html" class="text-muted"><strong>Track My Pill</strong></a>
+							</p>
+						</div>
+						<div class="col-6 text-end">
+							<ul class="list-inline">
+								<li class="list-inline-item">
+									<a class="text-muted" href="#">Support</a>
+								</li>
+								<li class="list-inline-item">
+									<a class="text-muted" href="#">Help Center</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</footer>
+		</div>
+	</div>
+
+	<script src="js/app.js"></script>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			var ctx = document.getElementById("chartjs-dashboard-line").getContext("2d");
+			var gradient = ctx.createLinearGradient(0, 0, 0, 225);
+			gradient.addColorStop(0, "rgba(215, 227, 244, 1)");
+			gradient.addColorStop(1, "rgba(215, 227, 244, 0)");
+			// Line chart
+			new Chart(document.getElementById("chartjs-dashboard-line"), {
+				type: "line",
+				data: {
+					labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+					datasets: [{
+						label: "",
+						fill: true,
+						backgroundColor: gradient,
+						borderColor: window.theme.primary,
+						data: [
+							2115,
+							1562,
+							1584,
+							1892,
+							1587,
+							1923,
+							2566,
+							2448,
+							2805,
+							3438,
+							2917,
+							3327
+						]
+					}]
+				},
+				options: {
+					maintainAspectRatio: false,
+					legend: {
+						display: false
+					},
+					tooltips: {
+						intersect: false
+					},
+					hover: {
+						intersect: true
+					},
+					plugins: {
+						filler: {
+							propagate: false
+						}
+					},
+					scales: {
+						xAxes: [{
+							reverse: true,
+							gridLines: {
+								color: "rgba(0,0,0,0.0)"
+							}
+						}],
+						yAxes: [{
+							ticks: {
+								stepSize: 1000
+							},
+							display: true,
+							borderDash: [3, 3],
+							gridLines: {
+								color: "rgba(0,0,0,0.0)"
+							}
+						}]
+					}
+				}
+			});
+		});
+	</script>
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			// Pie chart
+			new Chart(document.getElementById("chartjs-dashboard-pie"), {
+				type: "pie",
+				data: {
+					labels: ["Diabeties", "Blood Pressure", "Allergy"],
+					datasets: [{
+						data: [120, 80, 20],
+						backgroundColor: [
+							window.theme.primary,
+							window.theme.warning,
+							window.theme.danger
+						],
+						borderWidth: 5
+					}]
+				},
+				options: {
+					responsive: !window.MSInputMethodContext,
+					maintainAspectRatio: false,
+					legend: {
+						display: false
+					},
+					cutoutPercentage: 75
+				}
+			});
+		});
+	</script>
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			// Bar chart
+			new Chart(document.getElementById("chartjs-dashboard-bar"), {
+				type: "bar",
+				data: {
+					labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+					datasets: [{
+						label: "This year",
+						backgroundColor: window.theme.primary,
+						borderColor: window.theme.primary,
+						hoverBackgroundColor: window.theme.primary,
+						hoverBorderColor: window.theme.primary,
+						data: [54, 67, 41, 55, 62, 45, 55, 73, 60, 76, 48, 79],
+						barPercentage: .75,
+						categoryPercentage: .5
+					}]
+				},
+				options: {
+					maintainAspectRatio: false,
+					legend: {
+						display: false
+					},
+					scales: {
+						yAxes: [{
+							gridLines: {
+								display: false
+							},
+							stacked: false,
+							ticks: {
+								stepSize: 20
+							}
+						}],
+						xAxes: [{
+							stacked: false,
+							gridLines: {
+								color: "transparent"
+							}
+						}]
+					}
+				}
+			});
+		});
+	</script>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			document.getElementById("datetimepicker-dashboard").flatpickr({
+				inline: true,
+				prevArrow: "<span title=\"Previous month\">&laquo;</span>",
+				nextArrow: "<span title=\"Next month\">&raquo;</span>",
+			});
+		});
+	</script>
+
+	<script src="js/index.js"></script>
+	<script>
+		firebase.auth().onAuthStateChanged(function (user) {
+
+			if (!user) {
+				window.location.href = "index.html"
+			}
+		});
+	</script>
+
+</body>
+
+</html>
